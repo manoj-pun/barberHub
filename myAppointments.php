@@ -46,7 +46,7 @@ while ($row = mysqli_fetch_assoc($result)) {
             <?php endforeach; ?>
             <div class="cancel-edit-button">
                 <button class="cancel-button">Cancel Appointment</button>
-                <a href="gallery.php?edit=1&appointment_id=<?php echo $appointment['id']; ?>" class="edit-button">Edit Appointment</a>
+                <a href="" class="edit-button">Edit Appointment</a>
             </div>
         <?php else: ?>
             <p>You have no upcoming appointments.</p>
