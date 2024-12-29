@@ -44,10 +44,15 @@ while ($row = mysqli_fetch_assoc($result)) {
             <?php foreach ($appointments as $appointment): ?>
                 <p>You have an appointment on <?php echo htmlspecialchars($appointment['appointment_date']); ?> at <?php echo htmlspecialchars($appointment['time_slot']); ?>. Don't be late.</p>
             <?php endforeach; ?>
+            <div class="cancel-edit-button">
+                <button class="cancel-button">Cancel Appointment</button>
+                <a href="gallery.php?edit=1&appointment_id=<?php echo $appointment['id']; ?>" class="edit-button">Edit Appointment</a>
+            </div>
         <?php else: ?>
             <p>You have no upcoming appointments.</p>
         <?php endif; ?>
     </div>
+    
     <?php include "footer.php"; ?>
 </body>
 </html>

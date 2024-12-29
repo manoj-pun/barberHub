@@ -27,3 +27,33 @@ body {
     color: green;
 }
 
+.cancel-edit-button{
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.cancel-button{
+    color: white;
+    padding: 8px 20px;
+    background-color: red;
+    border: none;
+    border-radius: 5px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.edit-button{
+    color: white;
+    padding: 8px 20px;
+    background-color: green;
+    border: none;
+    border-radius: 5px;
+    font-size: 20px;
+    cursor: pointer;
+    text-decoration: none;
+}
+

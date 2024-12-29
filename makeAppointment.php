@@ -132,7 +132,11 @@ if (isset($_POST['appointment_date'])) {
                     <!-- Display error message if the user cannot book -->
                     <?php if (!$canBook) { ?>
                         <div class="form-group">
-                            <span class="error-message" style="color: red;">You cannot book a new appointment because you have an existing appointment.</span>
+                            <?php if (!$isUserLoggedIn) { ?>
+                                <span class="error-message" style="color: red;">Please login to book an appointment.</span>
+                            <?php } else { ?>
+                                <span class="error-message" style="color: red;">You cannot book a new appointment because you have an existing appointment.</span>
+                            <?php } ?>
                         </div>
                     <?php } else { ?>
                         <div class="form-group">
@@ -144,6 +148,7 @@ if (isset($_POST['appointment_date'])) {
                             <button type="submit" class="submit-button">Book Appointment</button>
                         </div>
                     <?php } ?>
+
 
                 </form>
 
