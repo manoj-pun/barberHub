@@ -16,6 +16,11 @@
         <div class="users-section">
             <button class="users" onclick="location.href='users.php'">Users</button>
         </div>
+
+        <div class="gallerys-section">
+            <button class="gallerys" onclick="location.href='gallerys.php'">Gallerys</button>
+        </div>
+
         <div class="appointments-section">
             <button class="appointments" onclick="location.href='appointments.php'">Appointments</button>
         </div>

@@ -1,0 +1,127 @@
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f4f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Form Container */
+.upload-section {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+}
+
+/* Form Heading */
+.edit-heading {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: green;
+}
+
+/* Image Upload */
+.upload-image-form {
+    margin-bottom: 15px;
+}
+
+.upload-image-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+}
+
+.upload-image-label {
+    display: block;
+    width: 100%;
+    height: 150px;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* .upload-image-label:hover {
+    border-color: #007bff;
+} */
+
+.upload-icon {
+    max-width: 100%;
+    max-height: 140px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+/* File Input (Hidden) */
+.upload-image-input {
+    display: none;
+}
+
+/* Title & Description Fields */
+.upload-title-form, .upload-description-form {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.upload-title, .description-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.upload-title-input,
+.upload-description-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.upload-description-input {
+    height: 150px; /* Increased height for bigger description area */
+    resize: vertical; /* Allow vertical resizing */
+}
+
+.upload-title-input:focus,
+.upload-description-input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Word Count */
+.word-count {
+    font-size: 12px;
+    color: #777;
+    text-align: right;
+}
+
+/* Submit Button */
+.update-button {
+    width: 100%;
+    padding: 12px;
+    background: green;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.update-button:hover {
+    background: #0056b3;
+}

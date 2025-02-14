@@ -34,7 +34,7 @@
         <div class="upload-description-form">
             <p class="description-title">Description</p>
             <textarea name="description" class="upload-description-input" id="description-input" oninput="limitWords()" placeholder="Enter Image Description"></textarea>
-            <p id="word-count" class="word-count">0/100</p>
+            <p id="word-count" class="word-count">0/50</p>
         </div>
 
         <button type="submit" class="upload-button">Upload</button>
@@ -59,21 +59,20 @@
         }
     });
 
-    // Limit words in description
     function limitWords() {
-        const textarea = document.getElementById('description-input');
-        const wordCountDisplay = document.getElementById('word-count');
+    const textarea = document.getElementById('description-input');
+    const wordCountDisplay = document.getElementById('word-count');
 
-        // Get the current value of the textarea and split it into an array of words
-        const words = textarea.value.trim().split(/\s+/);
+    // Get the current value of the textarea and split it into an array of words
+    const words = textarea.value.trim().split(/\s+/);
 
-        // Limit the number of words to 100
-        if (words.length > 100) {
-            words.length = 100;
-            textarea.value = words.join(' ');
-        }
+    // Limit the number of words to 50
+    if (words.length > 50) {
+        words.length = 50;
+        textarea.value = words.join(' ');
+    }
 
-        wordCountDisplay.textContent = `${words.length}/100`;
+    wordCountDisplay.textContent = `${words.length}/50`;
     }
 </script>
 

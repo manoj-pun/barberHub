@@ -56,7 +56,7 @@ if (isset($_GET['id'])) {
 
                 <div class="gallery-appointment-button">
                     <button class="style-button" onclick="redirectToAppointment(<?php echo $imageId; ?>)">
-                        Make Appointment
+                        Make appointment with this style
                     </button>
                 </div>
             </div>
