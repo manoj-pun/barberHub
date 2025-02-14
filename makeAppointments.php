@@ -1,3 +1,31 @@
+<?php
+include "database.php";
+
+// Check if imageId is provided
+if (isset($_GET['id'])) {
+    $imageId = $_GET['id'];
+
+    // Fetch image details from the database
+    $stmt = $conn->prepare("SELECT imageTitle, image_Data, image_Type FROM gallerys WHERE imageId = ?");
+    $stmt->bind_param("i", $imageId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($row = $result->fetch_assoc()) {
+        $imageTitle = $row['imageTitle'];
+        $imageData = base64_encode($row['image_Data']);
+        $imageType = $row['image_Type'];
+    } else {
+        echo "<p>Image not found.</p>";
+        exit;
+    }
+    $stmt->close();
+} else {
+    echo "<p>Invalid request.</p>";
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,23 +37,21 @@
 </head>
 
 <body>
-
-    <?php include "header.php" ?>
+    <?php include "header.php"; ?>
 
     <div class="user-appointment-section">
         <div class="appointment-content">
-            <!-- Static image for demonstration -->
+            <!-- Display the image dynamically -->
             <div class="appointment-image-container">
-                <img src="./IMAGES/braids.jpeg" alt="Gallery Image" class="appointment-image">
+                <img src="data:<?php echo $imageType; ?>;base64,<?php echo $imageData; ?>" alt="Gallery Image" class="appointment-image">
             </div>
 
-            <!-- Display title and form -->
+            <!-- Display title dynamically -->
             <div class="appointment-details">
-                <span class="appointment-title">Gallery Title</span>
+                <span class="appointment-title"><?php echo htmlspecialchars($imageTitle); ?></span>
 
-                <!-- Appointment form -->
                 <form id="appointmentForm" class="appointment-form">
-                    <input type="hidden" name="gallery_id" value="1">
+                    <input type="hidden" name="gallery_id" value="<?php echo $imageId; ?>">
                     <input type="hidden" id="selected_time_slot" name="time_slot" value="">
 
                     <div class="form-group">
@@ -35,7 +61,6 @@
 
                     <div class="available-slots" id="timeSlots">
                         <div class="time-book-status">
-                            <!-- Static time slots for demonstration -->
                             <div class="time-slot">
                                 <span>6:00 - 6:30</span>
                                 <button type="button" class="book-button">Book</button>
@@ -48,33 +73,7 @@
                                 <span>7:00 - 7:30</span>
                                 <button type="button" class="book-button">Book</button>
                             </div>
-                            <div class="time-slot" data-time-slot="7:00 - 7:30">
-                                <span>7:30 - 8:00</span>
-                                <button type="button" class="book-button">Book</button>
-                            </div>
-                            <div class="time-slot">
-                                <span>8:30 - 9:00</span>
-                                <button type="button" class="book-button">Book</button>
-                            </div>
-                            <div class="time-slot">
-                                <span>9:00 - 9:30</span>
-                                <button type="button" class="book-button">Book</button>
-                            </div>
-                            <div class="time-slot">
-                                <span>9:30 - 10:00</span>
-                                <button type="button" class="book-button">Book</button>
-                            </div>
-                            <div class="time-slot">
-                                <span>10:30 - 11:00</span>
-                                <button type="button" class="book-button">Book</button>
-                            </div>
-                            <!-- Add more time slots as needed -->
                         </div>
-                    </div>
-
-                    <!-- Error message if the user cannot book -->
-                    <div class="form-group" id="errorMessage" style="display:none;">
-                        <span class="error-message" style="color: red;">Please login to book an appointment.</span>
                     </div>
 
                     <div class="form-group">
@@ -82,59 +81,65 @@
                         <textarea id="comment" name="comment" class="form-textarea" placeholder="Enter any additional details or preferences"></textarea>
                     </div>
 
+                    <!-- <div id="errorMessage" style="display: none; color: red;">
+                        <p>Please login to continue.</p>
+                    </div> -->
+
+
                     <div class="form-group">
                         <button type="submit" class="book-button">Book Appointment</button>
-                        <button type="submit" class="update-button">Update Appointment</button>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
 
-    <?php include "footer.php" ?>
+    <?php include "footer.php"; ?>
 
-    <!-- <script>
-        const isUserLoggedIn = false; // Static user login status
-        const bookedTimeSlots = ['6:30 - 7:00']; // Static booked time slots for demonstration
+</body>
+<script>
+    const isUserLoggedIn = false; // Static user login status
+    const bookedTimeSlots = ['6:30 - 7:00']; // Static booked time slots for demonstration
 
-        // Get the current date and calculate tomorrow's date
-        const today = new Date();
-        const tomorrow = new Date(today);
-        tomorrow.setDate(today.getDate() + 1);
+    // Get the current date and calculate tomorrow's date
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
 
-        // Format the date to YYYY-MM-DD format (required for the input type="date")
-        const formattedDate = tomorrow.toISOString().split('T')[0];
+    // Format the date to YYYY-MM-DD format (required for the input type="date")
+    const formattedDate = tomorrow.toISOString().split('T')[0];
 
-        // Set the min attribute to the formatted date
-        const appointmentDateInput = document.getElementById('appointment_date');
-        appointmentDateInput.setAttribute('min', formattedDate);
+    // Set the min attribute to the formatted date
+    const appointmentDateInput = document.getElementById('appointment_date');
+    appointmentDateInput.setAttribute('min', formattedDate);
 
-        // Show available time slots when a date is selected
-        const appointmentDate = document.getElementById('appointment_date');
-        const timeSlots = document.getElementById('timeSlots');
-        const errorMessage = document.getElementById('errorMessage');
-        const appointmentForm = document.getElementById('appointmentForm');
-        const bookButtons = document.querySelectorAll('.book-button');
-        let selectedButton = null;
+    // Show available time slots when a date is selected
+    const appointmentDate = document.getElementById('appointment_date');
+    const timeSlots = document.getElementById('timeSlots');
+    const errorMessage = document.getElementById('errorMessage');
+    const appointmentForm = document.getElementById('appointmentForm');
+    const bookButtons = document.querySelectorAll('.book-button');
+    let selectedButton = null;
 
-        // Event listener for date input
-        appointmentDate.addEventListener('change', function() {
-            if (this.value) {
-                timeSlots.style.display = 'flex'; // Show the time slots
-            } else {
-                timeSlots.style.display = 'none'; // Hide if no date is selected
+    // Event listener for date input
+    appointmentDate.addEventListener('change', function() {
+        if (this.value) {
+            timeSlots.style.display = 'flex'; // Show the time slots
+        } else {
+            timeSlots.style.display = 'none'; // Hide if no date is selected
+        }
+    });
+
+    // Add event listeners to each button
+    bookButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Ignore clicks if the button is already booked
+            if (this.disabled) {
+                return;
             }
-        });
 
-        // Add event listeners to each button
-        bookButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                // Ignore clicks if the button is already booked
-                if (this.disabled) {
-                    return;
-                }
-
+            // Only change the text and styling of the time-slot buttons, not the "Book Appointment" button in the form
+            if (this.closest('.time-slot')) {
                 // If there's a previously selected button, reset its text and style
                 if (selectedButton) {
                     selectedButton.textContent = 'Book';
@@ -142,32 +147,29 @@
                 }
 
                 // Set the current button as booked
-                this.textContent = 'Booked';
-                this.classList.add('booked-button');
+                this.textContent = 'Booked'; // This changes the button text
+                this.classList.add('booked-button'); // This adds the 'booked' styling
                 selectedButton = this;
 
                 // Set the selected time slot in the hidden input field
                 const selectedTimeSlot = this.closest('.time-slot').getAttribute('data-time-slot');
                 document.getElementById('selected_time_slot').value = selectedTimeSlot;
-            });
-        });
-
-        // Handle form submission
-        appointmentForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            if (!isUserLoggedIn) {
-                errorMessage.style.display = 'block'; // Display error message if user is not logged in
-                return;
             }
-
-            // Submit the form data (here you would send it to the server)
-            console.log('Form submitted successfully.');
         });
-    </script> -->
+    });
 
-    asdgsdg
+    // Handle form submission
+    appointmentForm.addEventListener('submit', function(event) {
+        event.preventDefault();
 
-</body>
+        if (!isUserLoggedIn) {
+            errorMessage.style.display = 'block'; // Display error message if user is not logged in
+            return;
+        }
+
+        // Submit the form data (here you would send it to the server)
+        console.log('Form submitted successfully.');
+    });
+</script>
 
 </html>
