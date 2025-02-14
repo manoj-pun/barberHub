@@ -1,0 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #111;
+    color: #fff;
+}
+
+/* Home Layout */
+.home-layout {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 50px 20px;
+    margin-top: 50px;
+}
+
+/* Blog Section */
+.blog {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    text-align: center;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.video-showcase {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 10px;
+    filter: brightness(0.5);
+}
+
+.blog .slogan-heading {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #c5bbbb;
+    font-size: 2rem;
+    font-weight: 600;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.blog .slogan-description {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #948d8d;
+    font-size: 1.2rem;
+    font-weight: 400;
+    max-width: 80%;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+/* Appointment Button */
+.appointment-button {
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffe400;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+/* Barbers Section */
+.barbers {
+    margin-top: 50px;
+    max-width: 1200px;
+    width: 100%;
+}
+
+.barbers h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #ffe400;
+}
+
+.our-barbers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Barber Image Styling */
+.barbers-grid {
+    overflow: hidden;
+    border-radius: 10px;
+    transition: 0.3s ease-in-out;
+}
+
+.barbers-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.barbers-image:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(255, 77, 77, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .blog .slogan-heading {
+        display: none;
+    }
+
+    .blog .slogan-description {
+        display: none;
+    }
+
+    .appointment-button {
+        font-size: 0.9rem;
+        padding: 10px 20px;
+    }
+
+    .barbers h1 {
+        font-size: 1.8rem;
+    }
+
+    .our-barbers {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+}
+
+@media (max-width: 800px){
+    .blog .slogan-heading {
+        display: none;
+    }
+
+    .blog .slogan-description {
+        display: none;
+    }
+}

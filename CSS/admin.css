@@ -1,0 +1,412 @@
+/* Global reset and body styles */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: black;
+    font-family: sans-serif;
+    height: 100vh;
+    position: relative;
+    color: rgb(189, 182, 182);
+}
+
+/* Sidebar Section */
+.sidebar-section {
+    width: 16%;
+    color: rgb(189, 182, 182);
+    height: 100vh;
+    padding-top: 20px;
+    position: relative;
+}
+
+/* Logo Section */
+.logo-section {
+    margin: 0 10px 40px 10px;
+}
+
+.logo {
+    font-size: 40px;
+    font-weight: bold;
+    color: #ffe400;
+    cursor: pointer;
+}
+
+/* Sidebar Links */
+.users-section, .appointments-section, .add-gallery-section, .take-home {
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+.users, .appointments, .add-gallery, .home-link {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 18px;
+    background-color: #333;
+    border: none;
+    border-radius: 5px;
+    color: rgb(189, 182, 182);
+    cursor: pointer;
+}
+
+/* Main Content Section */
+.main-content-section {
+    width: 84%;
+    color: rgb(189, 182, 182);
+    padding-top: 20px;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 16%;
+}
+
+.manage-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+/* Main Content Header */
+.main-content-section hr {
+    margin-top: 10px;
+}
+
+.admin-title {
+    font-size: 25px;
+    padding: 10px;
+}
+
+.admin-logout-button {
+    position: relative;
+}
+
+.admin-button {
+    margin-right: 80px;
+    padding: 10px 20px;
+    font-size: 15px;
+    border-radius: 50px;
+    border: none;
+    background-color: #ffe400;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.logout-button {
+    position: absolute;
+    top: 38px;
+    right: 70px;
+    padding: 10px 30px;
+    border: none;
+    font-size: 15px;
+    border-radius: 5px;
+    color: red;
+    background-color: rgb(242, 233, 233);
+    cursor: pointer;
+    display: none;
+    font-weight: bold;
+}
+
+/* Upload Section */
+.upload-section {
+    position: absolute;
+    top: 100px;
+    left: 300px;
+}
+
+.upload-image-form {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.upload-image-title {
+    font-size: 20px;
+    color: rgb(189, 182, 182);
+    margin-bottom: 5px;
+}
+
+.upload-image-input {
+    display: none;
+}
+
+.upload-image-label {
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    padding: 0;
+    width: 0;
+}
+
+.upload-icon {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    display: block;
+}
+
+.upload-title-form, .upload-description-form {
+    margin-bottom: 10px;
+}
+
+.upload-description-form {
+    position: relative;
+}
+
+.upload-title, .description-title {
+    color: rgb(189, 182, 182);
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.upload-title-input, .upload-description-input {
+    width: 400px;
+    font-size: 15px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    outline: none;
+    font-family: sans-serif;
+    background-color: #e0dede;
+}
+
+.upload-description-input {
+    min-height: 200px;
+    padding: 10px;
+}
+
+.word-count {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    font-size: 14px;
+    color: gray;
+}
+
+.upload-button {
+    font-size: 20px;
+    padding: 5px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ffe400;
+    cursor: pointer;
+}
+
+/* Table Section */
+.table-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 16px;
+    position: absolute;
+    top: 100px;
+    left: 250px;
+}
+
+/* Table Styles */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+}
+
+.table-header {
+    background-color: #f3f4f6;
+    color: #4a4a4a;
+}
+
+.table-header th {
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 16px;
+    border: 1px solid #ddd;
+}
+
+.table-row {
+    transition: background-color 0.3s ease;
+}
+
+.table-row:hover {
+    background-color: #f9fafb;
+}
+
+.table-cell {
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #4a4a4a;
+    border: 1px solid #ddd;
+}
+
+.remove-button {
+    color: #e53e3e;
+    font-weight: 600;
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.remove-button:hover {
+    color: #c53030;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+}
+
+th, td {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    color: black;
+}
+
+th {
+    background-color: #f3f4f6;
+    color: #4a4a4a;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+td img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+
+td button {
+    padding: 5px 10px;
+    font-size: 14px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.completed {
+    background-color: #38a169;
+    color: black;
+}
+
+.cancelled {
+    background-color: #e53e3e;
+    color: black;
+}
+
+.complete {
+    background-color: #ffe400;
+    color: black;
+}
+
+td p {
+    font-size: 12px;
+    color: black;
+    line-height: 1.5;
+}
+
+.upload-section{
+    position: absolute;
+    top: 100px;
+    left: 300px
+}
+
+.upload-image-form {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.upload-image-title{
+    font-size: 20px;
+    color: rgb(189, 182, 182);
+    margin-bottom: 5px;
+}
+
+.upload-image-input {
+    display: none;
+}
+
+.upload-image-label {
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    padding: 0;
+    width: 0;
+}
+
+.upload-icon {
+    width: 120px;  
+    height: 120px;
+    object-fit: contain;
+    display: block;
+}
+
+.upload-title-form,
+.upload-description-form{
+    margin-bottom: 10px;
+}
+
+.upload-description-form{
+    position: relative;
+}
+
+.upload-title,
+.description-title{
+    color: rgb(189, 182, 182);
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.upload-title-input{
+    width: 400px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 15px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    outline: none;
+    font-family: sans-serif;
+    background-color: #e0dede;
+}
+
+.upload-description-input {
+    width: 400px;
+    min-height: 200px;           
+    height: auto;               
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    outline: none;
+    font-family: sans-serif;
+    background-color: #e0dede;
+}
+
+.word-count {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    font-size: 14px;
+    color: gray;
+}
+
+.upload-button{
+    font-size: 20px;
+    padding: 5px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ffe400;
+    cursor: pointer;
+}
+
+

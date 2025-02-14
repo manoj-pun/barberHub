@@ -1,0 +1,233 @@
+/* General styling */
+body {
+    background-color: #000; /* Black background for the entire page */
+    color: #fff; /* White text color */
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container for the user appointment section */
+.user-appointment-section {
+    width: 90%;
+    max-width: 800px;
+    margin: auto;
+    margin-top: 135px;
+    margin-bottom: 50px;
+    padding: 20px;
+    font-family: sans-serif;
+    background-color: #1e1e1e; /* Dark background for the section */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Main appointment content styling */
+.appointment-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+    background-color: #1e1e1e; /* Keep the dark background */
+}
+
+/* Styling for the image container */
+.appointment-image-container {
+    flex: 0 0 150px;
+}
+
+/* Styling the appointment image */
+.appointment-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* Details section */
+.appointment-details {
+    flex: 1;
+    background-color: #1e1e1e; /* Keep the dark background */
+}
+
+/* Styling the appointment title */
+.appointment-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #fff; /* White title text */
+}
+
+/* Styling the form */
+.appointment-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: #1e1e1e;
+}
+
+/* Form group styling */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Label styling */
+.form-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #fff; /* White text */
+}
+
+/* Input and textarea styling */
+.form-input,
+.form-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #333; /* Dark input fields */
+    color: #fff; /* White text in input fields */
+    box-sizing: border-box;
+    font-size: 16px;
+    outline: none;
+}
+
+/* Remove default appearance for date input */
+#appointment_date {
+    appearance: none;
+    background-color: #333;
+    color: #fff;
+    font-family: sans-serif;
+}
+
+/* Styling for the textarea */
+.form-textarea {
+    resize: none;
+    height: 50px;
+}
+
+/* Submit button styling */
+.book-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ffe400;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.update-button{
+    width: 100%;
+    padding: 10px;
+    background-color: rgb(19, 215, 19);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* Styling for available time slots */
+.available-slots {
+    justify-content: center;
+    background: none;
+    margin-bottom: 10px;
+    display: none;
+}
+
+/* Grid layout for time slots */
+.time-book-status {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Adjusted grid layout */
+    gap: 10px;
+    width: 100%;
+    background: none;
+}
+
+/* Time slot box styling */
+.time-slot {
+    background-color: #333;
+    border: 2px solid #444;
+    border-radius: 10px;
+    text-align: center;
+    padding: 5px;
+    color: #fff;
+}
+
+/* Time slot text styling */
+.time-slot span {
+    width: 90px;
+    background-color: #444;
+    color: #fff;
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* Book button styling */
+.time-slot button {
+    background-color: #13da66;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    color: #fff;
+}
+
+/* Styling for booked buttons */
+.booked-button {
+    background-color: gray !important;
+    pointer-events: none;
+}
+
+/* Error message styling */
+.error-message {
+    background: none;
+    color: red;
+}
+
+/* Responsive design for mobile devices */
+@media (max-width: 768px) {
+    .appointment-content {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .time-book-status {
+        grid-template-columns: 1fr 1fr; /* 2 columns on smaller screens */
+    }
+
+    .appointment-image {
+        width: 250px;
+        height: 300px;
+    }
+
+    .appointment-title {
+        font-size: 20px; /* Smaller title on mobile */
+    }
+
+    .submit-button {
+        font-size: 14px; /* Smaller button text on mobile */
+    }
+}
+
+@media (max-width: 480px) {
+    .time-book-status {
+        grid-template-columns: 1fr; /* 1 column on very small screens */
+    }
+
+    .appointment-image {
+        width: 200px;
+        height: 200px;
+    }
+
+    .appointment-title {
+        font-size: 18px; /* Even smaller title */
+    }
+
+    .submit-button {
+        font-size: 12px; /* Smaller button text */
+    }
+}

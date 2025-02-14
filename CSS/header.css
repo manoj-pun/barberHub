@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.header-layout-container {
+    width: 100%;
+}
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 50px;
+    width: 100%;
+    margin: auto;
+    position: fixed; 
+    top: 0; 
+    left: 0;
+    right: 0; 
+    z-index: 100; 
+    background-color:#222;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+    border-bottom: 2px solid white;
+}
+
+
+.header-left-section .logo {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #ffe400;
+    cursor: pointer;
+    margin-left: 100px;
+}
+
+.header-middle-section {
+    display: flex;
+    gap: 20px;
+}
+
+.header-middle-section a {
+    text-decoration: none;
+    color: #948d8d;
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: 0.3s ease-in-out;
+}
+
+.header-middle-section a:hover {
+    color: #deca14;
+}
+
+.header-right-section .login-button{
+    background-color: #ffe400;
+    margin-right: 100px;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    position: relative;
+}
+
+.user-name{
+    background-color: #ffe400;
+    margin-right: 100px;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    position: relative;
+    color: black;
+}
+
+.header-right-section .login-button:hover {
+    background-color: #deca14;
+}
+
+.view-appointment{
+    display: none;
+    width: 200px;
+    background-color: #f1ecec;
+    position: absolute;
+    top: 70px;
+    right: 90px;
+    border-radius: 4px;
+}
+
+.logout{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    cursor: pointer;
+    color: red !important;
+    font-weight: bolder;
+}
+
+.appointments{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    border-bottom: 1px solid gray;
+    cursor: pointer;
+    color: #948d8d !important;
+}
+
+.appointments:hover{
+    background-color: rgb(200, 207, 200);
+}
+
+ 
