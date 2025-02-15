@@ -15,7 +15,7 @@
         <table>
             <thead>
                 <tr>
-                    <th>Email</th>
+                    <th>Customer</th>
                     <th>Style</th>
                     <th>Title</th>
                     <th>Comments</th>
@@ -27,7 +27,7 @@
 
             <tbody>
                 <tr>
-                    <td>manoj@gmail.com</td>
+                    <td>manoj</td>
                     <td><img src="./IMAGES/buzz.jpeg" alt=""></td>
                     <td>Buzz</td>
                     <td>Lorem ipsum dol</td>
@@ -41,7 +41,7 @@
                 </tr>
 
                 <tr>
-                    <td>manoj@gmail.com</td>
+                    <td>manoj</td>
                     <td><img src="./IMAGES/buzz.jpeg" alt=""></td>
                     <td>Buzz</td>
                     <td>Loreme et ad pariatur provqui.</td>
@@ -55,7 +55,7 @@
                 </tr>
 
                 <tr>
-                    <td>manoj@gmail.com</td>
+                    <td>manoj</td>
                     <td><img src="./IMAGES/buzz.jpeg" alt=""></td>
                     <td>Buzz</td>
                     <td>dit beatsdfgdfgsdfgdfgsed maiores sequi.</td>

@@ -1,4 +1,12 @@
 <?php
+// Start the session if it hasn't been started already
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Check if the user is logged in
+$isUserLoggedIn = isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] == true;
+
 include "database.php";
 
 // Check if imageId is provided
@@ -61,19 +69,24 @@ if (isset($_GET['id'])) {
 
                     <div class="available-slots" id="timeSlots">
                         <div class="time-book-status">
-                            <div class="time-slot">
+                            <div class="time-slot" data-time-slot="6:00 - 6:30">
                                 <span>6:00 - 6:30</span>
                                 <button type="button" class="book-button">Book</button>
                             </div>
-                            <div class="time-slot">
+                            <div class="time-slot" data-time-slot="6:30 - 7:00">
                                 <span>6:30 - 7:00</span>
                                 <button type="button" class="book-button">Book</button>
                             </div>
-                            <div class="time-slot">
+                            <div class="time-slot" data-time-slot="7:00 - 7:30">
                                 <span>7:00 - 7:30</span>
                                 <button type="button" class="book-button">Book</button>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Error message for missing time slot -->
+                    <div id="timeError" style="color: red; display: none; margin-top: 10px;">
+                        <p>Time Slot is required.</p>
                     </div>
 
                     <div class="form-group">
@@ -81,14 +94,19 @@ if (isset($_GET['id'])) {
                         <textarea id="comment" name="comment" class="form-textarea" placeholder="Enter any additional details or preferences"></textarea>
                     </div>
 
-                    <!-- <div id="errorMessage" style="display: none; color: red;">
-                        <p>Please login to continue.</p>
-                    </div> -->
+                    <!-- Error message for non-logged-in users -->
+                    <?php if (!$isUserLoggedIn): ?>
+                        <div id="errorMessage" style="color: red;">
+                            <p>Please login to continue.</p>
+                        </div>
+                    <?php endif; ?>
 
-
-                    <div class="form-group">
-                        <button type="submit" class="book-button">Book Appointment</button>
-                    </div>
+                    <!-- Book Appointment button (only for logged-in users) -->
+                    <?php if ($isUserLoggedIn): ?>
+                        <div class="form-group">
+                            <button type="submit" class="book-button">Book Appointment</button>
+                        </div>
+                    <?php endif; ?>
                 </form>
             </div>
         </div>
@@ -98,7 +116,8 @@ if (isset($_GET['id'])) {
 
 </body>
 <script>
-    const isUserLoggedIn = false; // Static user login status
+    // Pass the PHP variable to JavaScript
+    const isUserLoggedIn = <?php echo $isUserLoggedIn ? 'true' : 'false'; ?>;
     const bookedTimeSlots = ['6:30 - 7:00']; // Static booked time slots for demonstration
 
     // Get the current date and calculate tomorrow's date
@@ -117,6 +136,7 @@ if (isset($_GET['id'])) {
     const appointmentDate = document.getElementById('appointment_date');
     const timeSlots = document.getElementById('timeSlots');
     const errorMessage = document.getElementById('errorMessage');
+    const timeError = document.getElementById('timeError');
     const appointmentForm = document.getElementById('appointmentForm');
     const bookButtons = document.querySelectorAll('.book-button');
     let selectedButton = null;
@@ -154,6 +174,9 @@ if (isset($_GET['id'])) {
                 // Set the selected time slot in the hidden input field
                 const selectedTimeSlot = this.closest('.time-slot').getAttribute('data-time-slot');
                 document.getElementById('selected_time_slot').value = selectedTimeSlot;
+
+                // Hide time slot error if a time slot is selected
+                timeError.style.display = 'none';
             }
         });
     });
@@ -162,13 +185,40 @@ if (isset($_GET['id'])) {
     appointmentForm.addEventListener('submit', function(event) {
         event.preventDefault();
 
+        // Check if the user is logged in
         if (!isUserLoggedIn) {
             errorMessage.style.display = 'block'; // Display error message if user is not logged in
             return;
         }
 
-        // Submit the form data (here you would send it to the server)
-        console.log('Form submitted successfully.');
+        // Validate time slot selection
+        const selectedTimeSlot = document.getElementById('selected_time_slot').value;
+
+        // Check if time slot is selected
+        if (!selectedTimeSlot) {
+            timeError.style.display = 'block'; // Show time slot error message
+            return;
+        } else {
+            timeError.style.display = 'none'; // Hide time slot error message
+        }
+
+        // Simulate form submission (replace this with actual form submission logic)
+        alert('Your appointment has been booked.');
+
+        // Clear input fields
+        document.getElementById('appointment_date').value = ''; // Clear date input
+        document.getElementById('selected_time_slot').value = ''; // Clear hidden time slot input
+        document.getElementById('comment').value = ''; // Clear comments textarea
+
+        // Reset the selected time slot button
+        if (selectedButton) {
+            selectedButton.textContent = 'Book';
+            selectedButton.classList.remove('booked-button');
+            selectedButton = null;
+        }
+
+        // Hide the time slots section
+        timeSlots.style.display = 'none';
     });
 </script>
 
