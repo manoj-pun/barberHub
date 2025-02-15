@@ -1,3 +1,23 @@
+<?php
+include "adminSidebar.php";
+include "adminMainContent.php";
+
+// Include the database connection file
+include "database.php";  // Assuming your database connection is in this file
+
+// Fetch data from the appointments table
+$query = "SELECT appointments.appointmentId, users.Name AS customerName, gallerys.imageTitle, appointments.comment, appointments.appointmentDate, appointments.timeSlot, appointments.status 
+          FROM appointments
+          INNER JOIN users ON appointments.userId = users.UserId
+          INNER JOIN gallerys ON appointments.galleryId = gallerys.imageId";
+
+$result = mysqli_query($conn, $query);
+
+if (!$result) {
+    die("Query failed: " . mysqli_error($conn));
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,11 +26,6 @@
     <title>Document</title>
 </head>
 <body>
-    <?php
-    include "adminSidebar.php";
-    include "adminMainContent.php";
-    ?>
-
     <div class="table-container">
         <table>
             <thead>
@@ -26,49 +41,29 @@
             </thead>
 
             <tbody>
+                <?php while ($row = mysqli_fetch_assoc($result)): ?>
                 <tr>
-                    <td>manoj</td>
-                    <td><img src="./IMAGES/buzz.jpeg" alt=""></td>
-                    <td>Buzz</td>
-                    <td>Lorem ipsum dol</td>
-                    <td>2025-02-30</td>
-                    <td>7-7:30</td>
+                    <td><?php echo htmlspecialchars($row['customerName']); ?></td>
+                    <td><img src="./IMAGES/<?php echo htmlspecialchars($row['imageTitle']); ?>.jpeg" alt=""></td>
+                    <td><?php echo htmlspecialchars($row['imageTitle']); ?></td>
+                    <td><?php echo htmlspecialchars($row['comment']); ?></td>
+                    <td><?php echo htmlspecialchars($row['appointmentDate']); ?></td>
+                    <td><?php echo htmlspecialchars($row['timeSlot']); ?></td>
                     <td>
-                        <button class="completed">Completed</button>
-                        <button class="cancelled">Cancelled</button>
-                        <button class="complete">Complete</button>
+                        <button class="completed"><?php echo $row['status'] === 'completed' ? 'Completed' : ''; ?></button>
+                        <button class="cancelled"><?php echo $row['status'] === 'cancelled' ? 'Cancelled' : ''; ?></button>
+                        <button class="complete"><?php echo $row['status'] === 'complete' ? 'Complete' : ''; ?></button>
                     </td>
                 </tr>
-
-                <tr>
-                    <td>manoj</td>
-                    <td><img src="./IMAGES/buzz.jpeg" alt=""></td>
-                    <td>Buzz</td>
-                    <td>Loreme et ad pariatur provqui.</td>
-                    <td>2025-02-30</td>
-                    <td>7-7:30</td>
-                    <td>
-                        <button class="completed">Completed</button>
-                        <button class="cancelled">Cancelled</button>
-                        <button class="complete">Complete</button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>manoj</td>
-                    <td><img src="./IMAGES/buzz.jpeg" alt=""></td>
-                    <td>Buzz</td>
-                    <td>dit beatsdfgdfgsdfgdfgsed maiores sequi.</td>
-                    <td>2025-02-30</td>
-                    <td>7-7:30</td>
-                    <td>
-                        <button class="completed">Completed</button>
-                        <button class="cancelled">Cancelled</button>
-                        <button class="complete">Complete</button>
-                    </td>
-                </tr>
+                <?php endwhile; ?>
             </tbody>
         </table>
     </div>
+
 </body>
 </html>
+
+<?php
+// Close the database connection
+mysqli_close($conn);
+?>
