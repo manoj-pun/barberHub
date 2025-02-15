@@ -4,15 +4,43 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-// Check if the user is logged in
+// Check if the user is logged in and if the user_id is set in the session
 $isUserLoggedIn = isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] == true;
+$userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
 include "database.php";
 
-// Check if imageId is provided
+// Handle form submission via AJAX
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['ajax'])) {
+    // Check if user is logged in and userId is set
+    if ($isUserLoggedIn && $userId) {
+        // Validate and sanitize input data
+        $galleryId = intval($_POST['gallery_id']);
+        $appointmentDate = $_POST['appointment_date'];
+        $timeSlot = $_POST['time_slot'];
+        $comment = $_POST['comment'];
+
+        // Insert the appointment into the database
+        $stmt = $conn->prepare("INSERT INTO appointments (userId, galleryId, appointmentDate, timeSlot, comment, status) VALUES (?, ?, ?, ?, ?, 'complete')");
+        $stmt->bind_param("iisss", $userId, $galleryId, $appointmentDate, $timeSlot, $comment);
+
+        if ($stmt->execute()) {
+            echo json_encode(['status' => 'success', 'message' => 'Appointment booked successfully!']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Error booking appointment. Please try again.']);
+        }
+
+        $stmt->close();
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Please log in to book an appointment.']);
+    }
+
+    exit();
+}
+
+// Fetch image details logic remains the same
 if (isset($_GET['id'])) {
     $imageId = $_GET['id'];
-
     // Fetch image details from the database
     $stmt = $conn->prepare("SELECT imageTitle, image_Data, image_Type FROM gallerys WHERE imageId = ?");
     $stmt->bind_param("i", $imageId);
@@ -33,6 +61,10 @@ if (isset($_GET['id'])) {
     exit;
 }
 ?>
+
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -58,7 +90,7 @@ if (isset($_GET['id'])) {
             <div class="appointment-details">
                 <span class="appointment-title"><?php echo htmlspecialchars($imageTitle); ?></span>
 
-                <form id="appointmentForm" class="appointment-form">
+                <form id="appointmentForm" class="appointment-form" method="POST" action="">
                     <input type="hidden" name="gallery_id" value="<?php echo $imageId; ?>">
                     <input type="hidden" id="selected_time_slot" name="time_slot" value="">
 
@@ -181,45 +213,81 @@ if (isset($_GET['id'])) {
         });
     });
 
-    // Handle form submission
     appointmentForm.addEventListener('submit', function(event) {
-        event.preventDefault();
+    event.preventDefault(); // Prevent form from submitting immediately
 
-        // Check if the user is logged in
-        if (!isUserLoggedIn) {
-            errorMessage.style.display = 'block'; // Display error message if user is not logged in
-            return;
-        }
+    // Check if the user is logged in
+    if (!isUserLoggedIn) {
+        errorMessage.style.display = 'block'; // Display error message if user is not logged in
+        return;
+    }
 
-        // Validate time slot selection
-        const selectedTimeSlot = document.getElementById('selected_time_slot').value;
+    // Validate time slot selection
+    const selectedTimeSlot = document.getElementById('selected_time_slot').value;
 
-        // Check if time slot is selected
-        if (!selectedTimeSlot) {
-            timeError.style.display = 'block'; // Show time slot error message
-            return;
+    // Check if time slot is selected
+    if (!selectedTimeSlot) {
+        timeError.style.display = 'block'; // Show time slot error message
+        return;
+    } else {
+        timeError.style.display = 'none'; // Hide time slot error message
+    }
+
+    // Prepare form data
+    const formData = new FormData(appointmentForm);
+    formData.append('ajax', true); // Add the flag to indicate AJAX submission
+
+    // Make the AJAX request
+    fetch('', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert(data.message); // Show success message
+            appointmentForm.reset(); // Clear the form fields
+            timeSlots.style.display = 'none'; // Hide time slots
         } else {
-            timeError.style.display = 'none'; // Hide time slot error message
+            alert(data.message); // Show error message
         }
-
-        // Simulate form submission (replace this with actual form submission logic)
-        alert('Your appointment has been booked.');
-
-        // Clear input fields
-        document.getElementById('appointment_date').value = ''; // Clear date input
-        document.getElementById('selected_time_slot').value = ''; // Clear hidden time slot input
-        document.getElementById('comment').value = ''; // Clear comments textarea
-
-        // Reset the selected time slot button
-        if (selectedButton) {
-            selectedButton.textContent = 'Book';
-            selectedButton.classList.remove('booked-button');
-            selectedButton = null;
-        }
-
-        // Hide the time slots section
-        timeSlots.style.display = 'none';
+    })
+    .catch(error => {
+        alert('An error occurred. Please try again.');
     });
+});
+
+// Event listener for book button clicks to select time slot
+bookButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        // Ignore clicks if the button is already booked
+        if (this.disabled) {
+            return;
+        }
+
+        // Only change the text and styling of the time-slot buttons, not the "Book Appointment" button in the form
+        if (this.closest('.time-slot')) {
+            // If there's a previously selected button, reset its text and style
+            if (selectedButton) {
+                selectedButton.textContent = 'Book';
+                selectedButton.classList.remove('booked-button');
+            }
+
+            // Set the current button as booked
+            this.textContent = 'Booked'; // This changes the button text
+            this.classList.add('booked-button'); // This adds the 'booked' styling
+            selectedButton = this;
+
+            // Set the selected time slot in the hidden input field
+            const selectedTimeSlot = this.closest('.time-slot').getAttribute('data-time-slot');
+            document.getElementById('selected_time_slot').value = selectedTimeSlot;
+
+            // Hide time slot error if a time slot is selected
+            timeError.style.display = 'none';
+        }
+    });
+});
+
 </script>
 
 </html>
