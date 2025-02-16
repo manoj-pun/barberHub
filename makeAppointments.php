@@ -10,10 +10,27 @@ $userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
 include "database.php";
 
+// Check if the user already has an existing appointment
+$hasExistingAppointment = false;
+if ($isUserLoggedIn && $userId) {
+    $stmt = $conn->prepare("SELECT * FROM appointments WHERE userId = ? AND status = 'complete'");
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $hasExistingAppointment = $result->num_rows > 0;
+    $stmt->close();
+}
+
 // Handle form submission via AJAX
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['ajax'])) {
     // Check if user is logged in and userId is set
     if ($isUserLoggedIn && $userId) {
+        // Check if the user already has an existing appointment
+        if ($hasExistingAppointment) {
+            echo json_encode(['status' => 'error', 'message' => 'You cannot book a new appointment because you have an existing appointment.']);
+            exit();
+        }
+
         // Validate and sanitize input data
         $galleryId = intval($_POST['gallery_id']);
         $appointmentDate = $_POST['appointment_date'];
@@ -62,10 +79,6 @@ if (isset($_GET['id'])) {
 }
 ?>
 
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -90,66 +103,73 @@ if (isset($_GET['id'])) {
             <div class="appointment-details">
                 <span class="appointment-title"><?php echo htmlspecialchars($imageTitle); ?></span>
 
-                <form id="appointmentForm" class="appointment-form" method="POST" action="">
-                    <input type="hidden" name="gallery_id" value="<?php echo $imageId; ?>">
-                    <input type="hidden" id="selected_time_slot" name="time_slot" value="">
-
-                    <div class="form-group">
-                        <label for="appointment_date" class="form-label">Date:</label>
-                        <input type="date" id="appointment_date" name="appointment_date" class="form-input" required>
+                <!-- Display error message if the user already has an existing appointment -->
+                <?php if ($hasExistingAppointment): ?>
+                    <div>
+                        <p class="error-message" style="color: red;">You cannot book a new appointment because you have an existing appointment.</p>
                     </div>
+                <?php else: ?>
+                    <form id="appointmentForm" class="appointment-form" method="POST" action="">
+                        <input type="hidden" name="gallery_id" value="<?php echo $imageId; ?>">
+                        <input type="hidden" id="selected_time_slot" name="time_slot" value="">
 
-                    <div class="available-slots" id="timeSlots">
-                        <div class="time-book-status">
-                            <div class="time-slot" data-time-slot="6:00 - 6:30">
-                                <span>6:00 - 6:30</span>
-                                <button type="button" class="book-button">Book</button>
-                            </div>
-                            <div class="time-slot" data-time-slot="6:30 - 7:00">
-                                <span>6:30 - 7:00</span>
-                                <button type="button" class="book-button">Book</button>
-                            </div>
-                            <div class="time-slot" data-time-slot="7:00 - 7:30">
-                                <span>7:00 - 7:30</span>
-                                <button type="button" class="book-button">Book</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Error message for missing time slot -->
-                    <div id="timeError" style="color: red; display: none; margin-top: 10px;">
-                        <p>Time Slot is required.</p>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="comment" class="form-label">Comments:</label>
-                        <textarea id="comment" name="comment" class="form-textarea" placeholder="Enter any additional details or preferences"></textarea>
-                    </div>
-
-                    <!-- Error message for non-logged-in users -->
-                    <?php if (!$isUserLoggedIn): ?>
-                        <div id="errorMessage" style="color: red;">
-                            <p>Please login to continue.</p>
-                        </div>
-                    <?php endif; ?>
-
-                    <!-- Book Appointment button (only for logged-in users) -->
-                    <?php if ($isUserLoggedIn): ?>
                         <div class="form-group">
-                            <button type="submit" class="book-button">Book Appointment</button>
+                            <label for="appointment_date" class="form-label">Date:</label>
+                            <input type="date" id="appointment_date" name="appointment_date" class="form-input" required>
                         </div>
-                    <?php endif; ?>
-                </form>
+
+                        <div class="available-slots" id="timeSlots">
+                            <div class="time-book-status">
+                                <div class="time-slot" data-time-slot="6:00 - 6:30">
+                                    <span>6:00 - 6:30</span>
+                                    <button type="button" class="book-button">Book</button>
+                                </div>
+                                <div class="time-slot" data-time-slot="6:30 - 7:00">
+                                    <span>6:30 - 7:00</span>
+                                    <button type="button" class="book-button">Book</button>
+                                </div>
+                                <div class="time-slot" data-time-slot="7:00 - 7:30">
+                                    <span>7:00 - 7:30</span>
+                                    <button type="button" class="book-button">Book</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Error message for missing time slot -->
+                        <div id="timeError" style="color: red; display: none; margin-top: 10px;">
+                            <p>Time Slot is required.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="comment" class="form-label">Comments:</label>
+                            <textarea id="comment" name="comment" class="form-textarea" placeholder="Enter any additional details or preferences"></textarea>
+                        </div>
+
+                        <!-- Error message for non-logged-in users -->
+                        <?php if (!$isUserLoggedIn): ?>
+                            <div id="errorMessage" style="color: red;">
+                                <p>Please login to continue.</p>
+                            </div>
+                        <?php endif; ?>
+
+                        <!-- Book Appointment button (only for logged-in users) -->
+                        <?php if ($isUserLoggedIn): ?>
+                            <div class="form-group">
+                                <button type="submit" class="book-button">Book Appointment</button>
+                            </div>
+                        <?php endif; ?>
+                    </form>
+                <?php endif; ?>
             </div>
         </div>
     </div>
 
     <?php include "footer.php"; ?>
-
 </body>
 <script>
     // Pass the PHP variable to JavaScript
     const isUserLoggedIn = <?php echo $isUserLoggedIn ? 'true' : 'false'; ?>;
+    const hasExistingAppointment = <?php echo $hasExistingAppointment ? 'true' : 'false'; ?>;
     const bookedTimeSlots = ['6:30 - 7:00']; // Static booked time slots for demonstration
 
     // Get the current date and calculate tomorrow's date
@@ -214,80 +234,54 @@ if (isset($_GET['id'])) {
     });
 
     appointmentForm.addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent form from submitting immediately
+        event.preventDefault(); // Prevent form from submitting immediately
 
-    // Check if the user is logged in
-    if (!isUserLoggedIn) {
-        errorMessage.style.display = 'block'; // Display error message if user is not logged in
-        return;
-    }
-
-    // Validate time slot selection
-    const selectedTimeSlot = document.getElementById('selected_time_slot').value;
-
-    // Check if time slot is selected
-    if (!selectedTimeSlot) {
-        timeError.style.display = 'block'; // Show time slot error message
-        return;
-    } else {
-        timeError.style.display = 'none'; // Hide time slot error message
-    }
-
-    // Prepare form data
-    const formData = new FormData(appointmentForm);
-    formData.append('ajax', true); // Add the flag to indicate AJAX submission
-
-    // Make the AJAX request
-    fetch('', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            alert(data.message); // Show success message
-            appointmentForm.reset(); // Clear the form fields
-            timeSlots.style.display = 'none'; // Hide time slots
-        } else {
-            alert(data.message); // Show error message
-        }
-    })
-    .catch(error => {
-        alert('An error occurred. Please try again.');
-    });
-});
-
-// Event listener for book button clicks to select time slot
-bookButtons.forEach(button => {
-    button.addEventListener('click', function() {
-        // Ignore clicks if the button is already booked
-        if (this.disabled) {
+        // Check if the user is logged in
+        if (!isUserLoggedIn) {
+            errorMessage.style.display = 'block'; // Display error message if user is not logged in
             return;
         }
 
-        // Only change the text and styling of the time-slot buttons, not the "Book Appointment" button in the form
-        if (this.closest('.time-slot')) {
-            // If there's a previously selected button, reset its text and style
-            if (selectedButton) {
-                selectedButton.textContent = 'Book';
-                selectedButton.classList.remove('booked-button');
-            }
+        // Check if the user already has an existing appointment
+        if (hasExistingAppointment) {
+            alert('You cannot book a new appointment because you have an existing appointment.');
+            return;
+        }
 
-            // Set the current button as booked
-            this.textContent = 'Booked'; // This changes the button text
-            this.classList.add('booked-button'); // This adds the 'booked' styling
-            selectedButton = this;
+        // Validate time slot selection
+        const selectedTimeSlot = document.getElementById('selected_time_slot').value;
 
-            // Set the selected time slot in the hidden input field
-            const selectedTimeSlot = this.closest('.time-slot').getAttribute('data-time-slot');
-            document.getElementById('selected_time_slot').value = selectedTimeSlot;
-
-            // Hide time slot error if a time slot is selected
+        // Check if time slot is selected
+        if (!selectedTimeSlot) {
+            timeError.style.display = 'block';
+            return;
+        } else {
             timeError.style.display = 'none';
         }
-    });
-});
 
+        // Prepare form data
+        const formData = new FormData(appointmentForm);
+        formData.append('ajax', true); // Add the flag to indicate AJAX submission
+
+        // Make the AJAX request
+        fetch('', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert(data.message); // Show success message
+                    location.reload(); // Reload the page to reflect the new appointment
+                } else {
+                    alert(data.message); // Show error message
+                }
+            })
+            .catch(error => {
+                alert('An error occurred. Please try again.');
+            });
+
+    });
 </script>
 
 </html>

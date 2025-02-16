@@ -4,30 +4,27 @@ include "database.php"; // Ensure this file contains the database connection
 
 // Check if the user is logged in
 if (!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== true) {
-    echo json_encode(["success" => false, "message" => "You need to log in to cancel your appointment."]);
+    echo json_encode(['success' => false, 'message' => 'You need to log in to cancel an appointment.']);
     exit;
 }
 
-// Check if the appointment ID is set in the POST request
+$userId = $_SESSION['user_id'];
+
 if (isset($_POST['appointmentId'])) {
     $appointmentId = $_POST['appointmentId'];
 
-    // Prepare the delete query
-    $query = "DELETE FROM appointments WHERE appointmentId = ? AND userId = ?";
+    // Update the appointment status to "canceled"
+    $query = "UPDATE appointments SET status = 'canceled' WHERE appointmentId = ? AND userId = ?";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("ii", $appointmentId, $_SESSION['user_id']); // Bind the appointment ID and user ID
-    $stmt->execute();
-
-    if ($stmt->affected_rows > 0) {
-        echo json_encode(["success" => true, "message" => "Appointment successfully canceled."]);
+    $stmt->bind_param("ii", $appointmentId, $userId);
+    
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Your appointment has been canceled.']);
     } else {
-        echo json_encode(["success" => false, "message" => "Error: Could not cancel the appointment."]);
+        echo json_encode(['success' => false, 'message' => 'An error occurred while canceling your appointment.']);
     }
-
     $stmt->close();
 } else {
-    echo json_encode(["success" => false, "message" => "No appointment ID provided."]);
+    echo json_encode(['success' => false, 'message' => 'Invalid appointment ID.']);
 }
-
-$conn->close();
 ?>
