@@ -10,7 +10,12 @@ if (!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== true) {
 $userId = $_SESSION['user_id'];
 
 // Fetch the latest upcoming appointment for the logged-in user
-$query = "SELECT appointmentDate, timeSlot, appointmentId, status FROM appointments WHERE userId = ? AND status != 'canceled' ORDER BY appointmentDate ASC LIMIT 1";
+// Exclude appointments with status 'cancelled' or 'completed'
+$query = "SELECT appointmentDate, timeSlot, appointmentId, status 
+          FROM appointments 
+          WHERE userId = ? AND status NOT IN ('canceled', 'completed') 
+          ORDER BY appointmentDate ASC 
+          LIMIT 1";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $userId);
 $stmt->execute();
@@ -84,9 +89,5 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
-
-
 </script>
-
-
 </html>
