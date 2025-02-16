@@ -2,6 +2,7 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 body {
@@ -471,6 +472,7 @@ td p {
     cursor: pointer;
     margin-top: 28px;
 }
+
 
 
 
