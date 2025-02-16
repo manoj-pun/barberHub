@@ -6,12 +6,14 @@ if (session_status() == PHP_SESSION_NONE) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Header</title>
     <link rel="stylesheet" href="./CSS/header.css">
 </head>
+
 <body>
     <div class="header-layout-container">
         <div class="header-section">
@@ -24,7 +26,13 @@ if (session_status() == PHP_SESSION_NONE) {
             </div>
             <div class="header-right-section">
                 <?php if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] == true): ?>
-                    <span class="user-name" id="userName"><?php echo explode(" ", $_SESSION['user_name'])[0]; ?></span>
+                    <span class="user-name" id="userName">
+                        <?php 
+                        // Get first name and capitalize the first letter
+                        $firstName = explode(" ", $_SESSION['user_name'])[0]; 
+                        echo ucfirst(strtolower($firstName)); 
+                        ?>
+                    </span>
                     <div class="view-appointment" id="viewAppointment">
                         <div onclick="location.href='myAppointments.php'" class="appointments">My Appointments</div>
                         <div class="logout" id="logoutButton">Logout</div>
@@ -70,4 +78,5 @@ if (session_status() == PHP_SESSION_NONE) {
         });
     </script>
 </body>
+
 </html>

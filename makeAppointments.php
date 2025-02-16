@@ -132,6 +132,26 @@ if (isset($_GET['id'])) {
                                     <span>7:00 - 7:30</span>
                                     <button type="button" class="book-button">Book</button>
                                 </div>
+                                <div class="time-slot" data-time-slot="7:00 - 7:30">
+                                    <span>7:30 - 8:00</span>
+                                    <button type="button" class="book-button">Book</button>
+                                </div>
+                                <div class="time-slot" data-time-slot="7:00 - 7:30">
+                                    <span>8:00 - 8:30</span>
+                                    <button type="button" class="book-button">Book</button>
+                                </div>
+                                <div class="time-slot" data-time-slot="7:00 - 7:30">
+                                    <span>8:30 - 9:00</span>
+                                    <button type="button" class="book-button">Book</button>
+                                </div>
+                                <div class="time-slot" data-time-slot="7:00 - 7:30">
+                                    <span>9:00 - 9:30</span>
+                                    <button type="button" class="book-button">Book</button>
+                                </div>
+                                <div class="time-slot" data-time-slot="7:00 - 7:30">
+                                    <span>9:30 - 10:00</span>
+                                    <button type="button" class="book-button">Book</button>
+                                </div>
                             </div>
                         </div>
 
